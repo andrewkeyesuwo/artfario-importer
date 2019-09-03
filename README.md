@@ -6,7 +6,7 @@ This is a sample template for artfario-importer - Below is a brief explanation o
 .
 ├── README.md                   <-- This instructions file
 ├── event.json                  <-- API Gateway Proxy Integration event payload
-├── hello_world                 <-- Source code for a lambda function
+├── artfario_importer           <-- Source code for a lambda function
 │   ├── __init__.py
 │   ├── app.py                  <-- Lambda function code
 │   ├── requirements.txt        <-- Lambda function code
@@ -30,7 +30,7 @@ This is a sample template for artfario-importer - Below is a brief explanation o
 **Invoking function locally using a local sample payload**
 
 ```bash
-sam local invoke HelloWorldFunction --event event.json
+sam local invoke ArtfarioImporterFunction --event event.json
 ```
 
 **Invoking function locally through local API Gateway**
@@ -39,17 +39,17 @@ sam local invoke HelloWorldFunction --event event.json
 sam local start-api
 ```
 
-If the previous command ran successfully you should now be able to hit the following local endpoint to invoke your function `http://localhost:3000/hello`
+If the previous command ran successfully you should now be able to hit the following local endpoint to invoke your function `http://localhost:3000/artfario-importer`
 
 **SAM CLI** is used to emulate both Lambda and API Gateway locally and uses our `template.yaml` to understand how to bootstrap this environment (runtime, where the source code is, etc.) - The following excerpt is what the CLI will read in order to initialize an API and its routes:
 
 ```yaml
 ...
 Events:
-    HelloWorld:
+    ArtfarioImporter:
         Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
         Properties:
-            Path: /hello
+            Path: /artfario-importer
             Method: get
 ```
 
@@ -59,10 +59,10 @@ AWS Lambda Python runtime requires a flat folder with all dependencies including
 
 ```yaml
 ...
-    HelloWorldFunction:
+    ArtfarioImporterFunction:
         Type: AWS::Serverless::Function
         Properties:
-            CodeUri: hello_world/
+            CodeUri: artfario_importer/
             ...
 ```
 
@@ -96,7 +96,7 @@ After deployment is complete you can run the following command to retrieve the A
 ```bash
 aws cloudformation describe-stacks \
     --stack-name artfario-importer \
-    --query 'Stacks[].Outputs[?OutputKey==`HelloWorldApi`]' \
+    --query 'Stacks[].Outputs[?OutputKey==`ArtfarioImporterApi`]' \
     --output table
 ``` 
 
@@ -107,7 +107,7 @@ To simplify troubleshooting, SAM CLI has a command called sam logs. sam logs let
 `NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
 
 ```bash
-sam logs -n HelloWorldFunction --stack-name artfario-importer --tail
+sam logs -n ArtfarioImporterWorldFunction --stack-name artfario-importer --tail
 ```
 
 You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
@@ -138,19 +138,19 @@ Here are a few things you can try to get more acquainted with building serverles
 
 * Uncomment lines on `app.py`
 * Build the project with ``sam build --use-container``
-* Invoke with ``sam local invoke HelloWorldFunction --event event.json``
+* Invoke with ``sam local invoke ArtfarioImporterFunction --event event.json``
 * Update tests
 
 ### Create an additional API resource
 
-* Create a catch all resource (e.g. /hello/{proxy+}) and return the name requested through this new path
+* Create a catch all resource (e.g. /artfario-importer/{proxy+}) and return the name requested through this new path
 * Update tests
 
 ### Step-through debugging
 
 * **[Enable step-through debugging docs for supported runtimes]((https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-using-debugging.html))**
 
-Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond artfario-importer samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
 
 # Appendix
 
@@ -179,7 +179,7 @@ All commands used throughout this document
 sam local generate-event apigateway aws-proxy > event.json
 
 # Invoke function locally with event.json as an input
-sam local invoke HelloWorldFunction --event event.json
+sam local invoke ArtfarioImporterFunction --event event.json
 
 # Run API Gateway locally
 sam local start-api
@@ -201,10 +201,10 @@ sam deploy \
 # Describe Output section of CloudFormation stack previously created
 aws cloudformation describe-stacks \
     --stack-name artfario-importer \
-    --query 'Stacks[].Outputs[?OutputKey==`HelloWorldApi`]' \
+    --query 'Stacks[].Outputs[?OutputKey==`ArtfarioImporterApi`]' \
     --output table
 
 # Tail Lambda function Logs using Logical name defined in SAM Template
-sam logs -n HelloWorldFunction --stack-name artfario-importer --tail
+sam logs -n ArtfarioImporterFunction --stack-name artfario-importer --tail
 ```
 
