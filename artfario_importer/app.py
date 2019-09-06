@@ -1,6 +1,5 @@
 import json
-
-# import requests
+from met_api.MetAPI import MetAPI
 
 
 def lambda_handler(event, context):
@@ -25,18 +24,13 @@ def lambda_handler(event, context):
         Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
     """
 
-    # try:
-    #     ip = requests.get("http://checkip.amazonaws.com/")
-    # except requests.RequestException as e:
-    #     # Send some context about this error to Lambda Logs
-    #     print(e)
-
-    #     raise e
+    met_api = MetAPI('https://collectionapi.metmuseum.org')
+    data = met_api.get_full_collection()
 
     return {
         "statusCode": 200,
         "body": json.dumps({
             "message": "artfario-importer",
-            # "location": ip.text.replace("\n", "")
+            "location": data.text
         }),
     }
